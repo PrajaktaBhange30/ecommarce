@@ -10,9 +10,13 @@ public class UserResponseDto {
 
     private String firstName;
 
+    private String lastName;
+
     private String email;
 
     private String mobileNumber;
+
+    private  Set<String> roleNames;
 
 
 }

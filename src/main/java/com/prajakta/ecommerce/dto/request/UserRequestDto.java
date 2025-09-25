@@ -26,5 +26,5 @@ public class UserRequestDto {
     @NotBlank
     private String password;
 
-
+    private Set<String> roleNames;
 }
