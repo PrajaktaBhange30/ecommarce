@@ -1,6 +1,7 @@
 package com.prajakta.ecommerce.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.prajakta.ecommerce.entity.enums.RoleType;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
@@ -53,12 +54,10 @@ public class User {
         updatedAt = LocalDateTime.now();
     }
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "user_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id")
-    )
-    @JsonManagedReference
-    private Set<Role> roles = new HashSet<>();
+    @ElementCollection(targetClass = RoleType.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"))
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role", nullable = false)
+    private Set<RoleType> roles = new HashSet<>();
 }
