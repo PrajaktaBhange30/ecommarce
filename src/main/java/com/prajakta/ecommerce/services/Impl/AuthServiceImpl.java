@@ -76,15 +76,17 @@ public class AuthServiceImpl implements AuthService {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 
         Set<String> roles= userDetails.getAuthorities().stream()
-                .map(auth-> auth.getAuthority().replace("Role_",""))
+                .map(auth-> auth.getAuthority().replace("ROLE_",""))
                 .collect(Collectors.toSet());
+
 
 
         if(!roles.contains("CUSTOMER")){
             throw new AccessDeniedException("you have no permission to access...");
         }
 
-        String token= jwtUtil.generateToken(userDetails.getUsername(),roles);
+        String token = jwtUtil.generateToken(userDetails.getUsername(),roles);
+
 
         JwtResponseDto responseDto = new JwtResponseDto();
         responseDto.setToken(token);
@@ -93,4 +95,43 @@ public class AuthServiceImpl implements AuthService {
 
         return responseDto;
     }
+
+    @Override
+    public JwtResponseDto adminLogin(LoginRequestDto loginRequestDto) {
+
+        Authentication authentication= authenticationManager.authenticate(
+
+                new UsernamePasswordAuthenticationToken(loginRequestDto.getEmail(), loginRequestDto.getPassword())
+        );
+
+        boolean isAdmin = authentication.getAuthorities().stream()
+                .anyMatch(auth-> auth.getAuthority().equals("ROLE_ADMIN"));
+
+            if(!isAdmin){
+                throw new AccessDeniedException("Only admin login access here...");
+            }
+
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+
+        Set<String> roles= userDetails.getAuthorities().stream()
+                .map(auth-> auth.getAuthority().replace("ROLE_",""))
+                .collect(Collectors.toSet());
+
+
+
+        if(!roles.contains("ADMIN")){
+            throw new AccessDeniedException("you have no permission to access...");
+        }
+
+        String token = jwtUtil.generateToken(userDetails.getUsername(),roles);
+
+
+        JwtResponseDto responseDto = new JwtResponseDto();
+        responseDto.setToken(token);
+        responseDto.setEmail(userDetails.getUsername());
+        responseDto.setRoles(roles);
+
+        return responseDto;
+    }
+
 }

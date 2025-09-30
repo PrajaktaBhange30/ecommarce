@@ -8,9 +8,10 @@ import java.util.Set;
 @Data
 public class RoleRequestDto {
     @NotBlank
+
     private String name;
 
     private String description;
 
-    private Set<String> permissionNames;
+    private Set<String> permissions;
 }

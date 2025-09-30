@@ -3,6 +3,8 @@ package com.prajakta.ecommerce.entity;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -11,6 +13,8 @@ import java.util.Set;
 @Entity
 @Table(name = "users")
 @Data
+@Getter
+@Setter
 public class User {
 
     @Id
