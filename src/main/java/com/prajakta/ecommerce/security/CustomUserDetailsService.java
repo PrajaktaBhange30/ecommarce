@@ -23,15 +23,10 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = userRepository.findByEmail(email).orElseThrow(()-> new UsernameNotFoundException("User not found with email : " + email));
 
-// enable this all comments line no 27-29 & 34 & comment on 35,36 doing this the approach of non-custom query usage from userRespository will take place
-//        Set<SimpleGrantedAuthority> authorities = user.getRoles().stream()
-//                .map(role -> new SimpleGrantedAuthority("ROLE_" + role.getName()))
-//                .collect(Collectors.toSet());
 
         return new org.springframework.security.core.userdetails.User(
                 user.getEmail(),
                 user.getPassword(),
-//                authorities
                 user.getRoles().stream().map(role -> new SimpleGrantedAuthority("ROLE_" + role.getName()))
                         .collect(Collectors.toSet())
         );

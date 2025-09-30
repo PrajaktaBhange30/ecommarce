@@ -2,10 +2,7 @@ package com.prajakta.ecommerce.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -13,6 +10,8 @@ import java.util.Set;
 @Entity
 @Table(name = "permissions")
 @Data
+@Getter
+@Setter
 @EqualsAndHashCode(of = "id")
 public class Permission {
     @Id
@@ -25,7 +24,7 @@ public class Permission {
     @Column
     private String description;
 
-    @ManyToMany(mappedBy = "permissions", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "permissions")
     @JsonBackReference
     private Set<Role> roles = new HashSet<>();
 

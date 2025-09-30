@@ -8,6 +8,8 @@ import com.prajakta.ecommerce.dto.response.UserResponseDto;
 public interface AuthService {
     UserResponseDto register(UserRequestDto userResquestDto);
     JwtResponseDto login(LoginRequestDto loginRequestDto);
+    JwtResponseDto adminLogin(LoginRequestDto loginRequestDto);
+
 
 
 

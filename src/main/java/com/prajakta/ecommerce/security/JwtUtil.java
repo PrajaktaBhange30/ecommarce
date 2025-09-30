@@ -1,16 +1,14 @@
 package com.prajakta.ecommerce.security;
 
 
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-
 import javax.crypto.SecretKey;
-import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,7 +20,7 @@ public class JwtUtil {
     private String secret;
 
     @Value("${jwt_expiration}")
-    private String jwtExpiration;
+    private Long jwtExpiration;
 
     private SecretKey key;
 
@@ -56,6 +54,9 @@ public class JwtUtil {
         try {
             Jwts.parser().verifyWith(key).build().parseSignedClaims(token);
             return true;
+        } catch (ExpiredJwtException e) {
+            // Handle specifically if needed
+            return false;
         } catch (JwtException | IllegalArgumentException e) {
             return false;
         }

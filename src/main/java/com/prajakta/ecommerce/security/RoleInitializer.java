@@ -42,8 +42,9 @@ public class RoleInitializer implements CommandLineRunner {
     }
 
     private Permission createPermissionIfNotExists(String name) {
+        Permission permission = new Permission(name);
         return permissionRepository.findByName(name)
-                .orElseGet(() -> permissionRepository.save(new Permission(name)));
+                .orElseGet(() -> permissionRepository.save(permission));
     }
 
     private void createRoleIfNotExists(String name, String description, Set<Permission> permissions) {
